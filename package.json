@@ -1,0 +1,52 @@
+{
+    "name": "ProductDashboard",
+    "version": "1.0.0",
+    "description": "Platform to monitor MKT products",
+    "main": "./product-dashboard.js",
+    "scripts": {
+        "start": "node product-dashboard.js"
+    },
+    "contributors": [
+        {
+            "name": "Walter Nzeacha",
+            "email": "walter.nzeacha@mtn.com"
+        }
+    ],
+    "keywords": [
+        "product",
+        "mkt"
+    ],
+    "author": "MTN Cameroon",
+    "license": "GPL-2.0+",
+    "dependencies": {
+        "body-parser": "^1.15.1",
+        "bunyan": "^1.8.1",
+        "dateformat": "^1.0.12",
+        "express": "^4.13.4",
+        "express-session": "^1.12.1",
+        "fast-csv": "^2.0.0",
+        "highcharts-export-server": "^2.0.0",
+        "inherits": "^2.0.1",
+        "method-override": "^2.3.6",
+        "mocha": "^2.5.3",
+        "morgan": "^1.7.0",
+        "multer": "^1.3.0",
+        "mysql": "^2.10.2",
+        "node-uuid": "^1.4.7",
+        "oracledb": "^1.13.1",
+        "orm": "^3.1.0",
+        "orm-transaction": "0.0.2",
+        "path": "^0.12.7",
+        "pdfkit": "^0.8.3",
+        "pdfmake": "^0.1.33",
+        "sha1": "^1.1.1",
+        "should": "^9.0.0",
+        "should-equal": "^1.0.0",
+        "should-format": "^1.0.0",
+        "should-type": "^1.0.1",
+        "supertest": "^1.2.0",
+        "uuid": "^2.0.1",
+        "wkhtmltopdf": "^0.3.4",
+        "xlsx": "^0.11.1"
+    }
+}

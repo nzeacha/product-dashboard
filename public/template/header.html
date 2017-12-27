@@ -1,0 +1,112 @@
+<!-- begin #header -->
+<div id="header" class="header navbar navbar-default navbar-fixed-top" ng-controller="headerController">
+    <!-- begin container-fluid -->
+    <div class="container-fluid">
+        <!-- begin mobile sidebar expand / collapse button -->
+        <div class="navbar-header">
+            <a href="index.html" class="navbar-brand" style="font-size: 15px">
+                <img class="logo-img" style="display: inline" src="assets/img/logo-mtn.jpeg" width="30px" height="30px">
+                Product Dashboard
+            </a>
+            <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!-- end mobile sidebar expand / collapse button -->
+        
+        <!-- begin header navigation right -->
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown navbar-language" ng-if="setting.layout.pageLanguageBar === true">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="flag-icon flag-icon-us" title="us"></span>
+                    <span class="name">EN</span> <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu animated fadeInRight p-b-0">
+                    <li class="arrow"></li>
+                    <li><a href="javascript:;"><span class="flag-icon flag-icon-us" title="us"></span> English</a></li>
+                    <li><a href="javascript:;"><span class="flag-icon flag-icon-cn" title="cn"></span> French</a></li>
+                </ul>
+            </li>
+<!--            <li class="dropdown navbar-user">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <img ng-if="!user.picture" src="assets/img/user.png" alt="" /> 
+                    <img ng-if="user.picture" ng-src="{{user.picture}}" alt="" /> 
+                    <span class="hidden-xs">{{user.name}} [{{user.position.name}}, {{user.unit.name}}]</span> <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu animated fadeInLeft">
+                    <li class="arrow"></li>
+                    <li><a href="javascript:;" ng-click="editProfile()">Edit Profile</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:;" ng-click="signout()">Log Out</a></li>
+                </ul>
+            </li>-->
+            <li class="hidden-xs" ng-if="setting.layout.pageTwoSidebar === true">
+                <a href="javascript:;" data-click="right-sidebar-toggled" class="f-s-14">
+                    <i class="fa fa-th"></i>
+                </a>
+            </li>
+        </ul>
+        <!-- end header navigation right -->
+    </div>
+    <!-- end container-fluid -->
+    <script type="text/ng-template" id="ModalProfile.html">
+        <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">My Profile</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="form-horizontal">
+                <div class="text-center">
+                    <img ng-if="!user.picture" src="assets/img/user.png" alt="" width="100" /> 
+                    <img ng-if="user.picture" ng-src="{{user.picture}}" alt="" class="img-circle" /> 
+                    <div style="display: block">
+                        <a href="javascript:;" ngf-select="upload($files, $file, $newFiles, $duplicateFiles, $invalidFiles, $event)" ng-model="pic" 
+                            name="file" ngf-pattern="'image/*'" ng-max-files="1"
+                            ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                            ngf-resize="{width: 150, height: 150}">Change picture</a>
+                        <a ng-if="user.picture" href="javascript:;" ng-click="removePicture()" style="margin-left: 20px">Remove picture</a>
+                    </div>
+                </div><br>
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <input uib-tooltip="Email" class="form-control" type="text" ng-model="user.email" readonly />
+                    </div>
+                    <div class="col-lg-6">
+                        <input uib-tooltip="Name" class="form-control" type="text" ng-model="user.name" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <div class="checkbox checkbox-circle">
+                            <input type="checkbox" ng-model="user.change_password" ng-true-value="1" ng-false-value="0" id="chgp">
+                            <label for="chgp">
+                                Change Password
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="user.change_password">
+                    <div class="col-lg-6">
+                        <input type="password" placeholder="Current password" ng-model="user.old_pwd" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group" ng-if="user.change_password">
+                    <div class="col-lg-6">
+                        <input type="password" placeholder="New password" ng-model="user.new_pwd" class="form-control">
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="password" placeholder="Confirm new password" ng-model="user.confirm_new_pwd" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-inverse" type="button" ng-click="save()" ng-disabled="pWorking || !user.name || (user.change_password && (!user.old_pwd || !user.new_pwd || user.new_pwd !== user.confirm_new_pwd))">
+                Save<i ng-show="pWorking" class="fa fa-spinner fa-pulse"></i>
+            </button>
+            <button class="btn btn-white" type="button" ng-click="cancel()" ng-disabled="pWorking">Cancel</button>
+        </div
+    </script>
+</div>
+<!-- end #header -->

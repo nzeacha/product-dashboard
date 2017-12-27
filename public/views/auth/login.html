@@ -1,0 +1,52 @@
+<toaster-container></toaster-container>
+<div ng-controller="loginController">
+	<div class="login-cover">
+	    <div class="login-cover-image"><img src="assets/img/login-bg/bg-6.jpg" data-id="login-cover-image" alt="" /></div>
+	    <div class="login-cover-bg"></div>
+	</div>
+	
+    <!-- begin login -->
+    <div class="login login-v2" data-pageload-addclass="animated fadeIn">
+        <!-- begin brand -->
+        <div class="login-header text-center">
+            <div class="brand">
+                <img class="logo-img" style="display: inline" src="assets/img/logo-mtn.jpeg" alt="Logo" width="60" height="60">
+                Product Dashboard
+            </div>
+        </div>
+        <!-- end brand -->
+        <div class="login-content">
+            <form method="POST" class="margin-bottom-0" ng-submit="submitForm()" novalidate>
+                <div class="form-group m-b-20">
+                    <input type="text" class="form-control input-lg" placeholder="Username" ng-disabled="working" ng-model="user.email" autofocus>
+                </div>
+                <div class="form-group m-b-20">
+                    <input type="password" class="form-control input-lg" placeholder="Password" ng-disabled="working" ng-model="user.password" />
+                </div>
+                <div class="checkbox m-b-20">
+                    <label>
+                        <input type="checkbox"> Remember Me
+                    </label>
+                </div>
+                <div class="login-buttons">
+                    <button type="submit" class="btn btn-inverse" ng-disabled="working" >Sign in 
+                        <i ng-show="working" class="fa fa-spinner fa-pulse"></i>
+                    </button>
+                </div>
+                <div class="m-t-40 text-center text-yellow">
+                    &copy; <a style="color: inherit" href="http://www.mtn.cm" target="_blank">MTN Cameroon</a> - All Right Reserved 2017
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- end login -->
+
+<!--    <ul class="login-bg-list clearfix">
+        <li class="active"><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-6.jpg" alt="" /></a></li>
+        <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-2.jpg" alt="" /></a></li>
+        <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-3.jpg" alt="" /></a></li>
+        <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-4.jpg" alt="" /></a></li>
+        <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-5.jpg" alt="" /></a></li>
+        <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-1.jpg" alt="" /></a></li>
+    </ul>-->
+</div>
