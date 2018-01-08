@@ -259,65 +259,69 @@ var Routes = function (router) {
         
         
 
-        router.post('/import/csm', function(req, res){
+    router.post('/import/csm', function(req, res){
         upload(req, res, function(error){
-        if (error){
-        console.log(error);
-                res.status(400).json(error);
-        } else {
-        var f = req.file;
-                var filepath = path.resolve(f.destination + '/' + f.filename);
-                var workbook = XLSX.readFile(filepath);
-                var sheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[sheetName];
-                var range = XLSX.utils.decode_range(worksheet['!ref']);
-                var personnes = [];
-                var tab = [];
-                var j = 3;
-                
-                if (f.filename.endsWith('.csv')) j=1;
-                for (j; j < range.e.r; j++){
-        for (var k = 0; k <= range.e.c; k++){
-        tab[k] = worksheet[XLSX.utils.encode_cell({r:j, c:k})].v;
-        }
 
-        var p = new Personne(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8], tab[9]);
+        if (error){
+            console.log(error);
+            res.status(400).json(error);
+        } else {
+            var f = req.file;
+            var filepath = path.resolve(f.destination + '/' + f.filename);
+            var workbook = XLSX.readFile(filepath);
+            var sheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[sheetName];
+            var range = XLSX.utils.decode_range(worksheet['!ref']);
+            var personnes = [];
+            var tab = [];
+            var j = 3;
+
+            if (f.filename.endsWith('.csv')) j=1;
+            
+            for (j; j < range.e.r; j++){
+                for (var k = 0; k <= range.e.c; k++){
+                    if(worksheet[XLSX.utils.encode_cell({r:j, c:k})]){
+                        tab[k] = worksheet[XLSX.utils.encode_cell({r:j, c:k})].v;
+                    }
+                }
+
+                var p = new Personne(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8], tab[9]);
                 personnes.push(p);
-        }
+            }
             var csm = req.models.csm.entity;
 //            csm.remove
             csm.find({}).remove(function(err){
-                console.log(err);
-                console.log("Importation Start:");
-                csm.create(personnes, function(error, result){
+            console.log(err);
+            console.log("Importation Start:");
+            csm.create(personnes, function(error, result){
 
-                    csm.aggregate(["date", "product_code"], {}).sum("subscriptions").sum("total_amount").groupBy("date", "product_code").get(function(error, results){
-                        var product = req.models.product.entity;
-                        console.log(results.length);
-                        for(var i = 0; i<results.length ; i++){
-                            (function(i){
-                                product.create(results[i], function(error, result){
-                                
-                                    console.log(i,error);
-                                   if (i===results.length-1) {
+                csm.aggregate(["date", "product_code"], {}).sum("subscriptions").sum("total_amount").groupBy("date", "product_code").get(function(error, results){
+                    var product = req.models.product.entity;
+                    console.log(results.length);
+                    for(var i = 0; i<results.length ; i++){
+                        (function(i){
+                            product.create(results[i], function(error, result){
 
-                                       console.log(f.filename + "AGGREGATION COMPLETE");
-                                       res.status(200).json(result);
-                                   }
-                               });
-                            })(i);
-                            
-                        }
-                        
-                    });
-                });  
-            });
-              
-        }
+                                console.log(i,error);
+                               if (i===results.length-1) {
 
+                                   console.log(f.filename + "AGGREGATION COMPLETE");
+                                   res.status(200).json(result);
+                               }
+                           });
+                        })(i);
 
+                    }
+
+                });
+            });  
         });
-        });
+
+    }
+
+
+    });
+    });
 
         
         
