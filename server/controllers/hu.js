@@ -14,8 +14,8 @@ var fonts = {
 var Define = require('../config/define');
 var Queries = require('../config/queries');
 var logger = require('../config/logger');
-var radb = require('../config/radb');
-var oracledb = require('oracledb');
+//var radb = require('../config/radb');
+//var oracledb = require('oracledb');
 var dateformat = require('dateformat');
 var utils = require('../util/utils');
 var path = require('path');
@@ -383,7 +383,7 @@ HU.prototype.generateReportPdf = function (data, res) {
                 style: 'centerme'
             });
             doc.content.push({
-                text: 'VOICE, SMS AND DATA HIGH USAGE REPORT \n '+ dateformat(new Date(data.startDate), 'dd mmm yyyy') + ' - ' + dateformat(new Date(data.endDate), 'dd mmm yyyy'),
+                text: 'PRODUCT DASHBOARD REPORT \n '+ dateformat(new Date(data.startDate), 'dd mmm yyyy') + ' - ' + dateformat(new Date(data.endDate), 'dd mmm yyyy'),
                 margin: [0, 25, 0, 0],
                 style: 'title'
             });

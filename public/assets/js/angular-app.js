@@ -65,7 +65,7 @@ var checkLoggedIn = function ($q, $timeout, $state, $location, $rootScope, Auth)
 };
 
 pDashboard.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/app/wanda');
+        $urlRouterProvider.otherwise('/app/go-bundle');
 
         $stateProvider
                 .state('app', {
@@ -144,9 +144,9 @@ pDashboard.config(['$stateProvider', '$urlRouterProvider', function ($stateProvi
                             }]
                     }
                 })
-                .state('app.in.wanda', {
-                    url: 'wanda',
-                    data: {pageTitle: 'MTN WANDA'},
+                .state('app.in.mtnwanda', {
+                    url: 'mtnwanda',
+                    data: {pageTitle: 'MTN Wanda'},
                     templateUrl: 'views/mtn_wanda.html',
                     resolve: {
                         service: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -200,6 +200,84 @@ pDashboard.config(['$stateProvider', '$urlRouterProvider', function ($stateProvi
                                             }
                                         ]
                                         );
+                            }]
+                    }
+                })
+                .state('app.in.goBundle', {
+                    url: 'go-bundle',
+                    data: {pageTitle: 'Go Bundles'},
+                    templateUrl: 'views/go_bundles.html',
+                    resolve: {
+                        service: ['$ocLazyLoad', function ($ocLazyLoad) {
+                                return $ocLazyLoad.load(
+                                        [
+                                            {
+                                                name: 'daterangepicker',
+                                                serie: true,
+                                                files: [
+                                                    'assets/plugins/moment/moment.min.js',
+                                                    'assets/plugins/angularjs/daterangepicker/daterangepicker.js',
+                                                    'assets/plugins/angularjs/daterangepicker/angular-daterangepicker.js',
+                                                    'assets/css/plugins/daterangepicker/daterangepicker-bs3.css'
+                                                ]
+                                            },
+                                            {
+                                                name: 'datePicker',
+                                                files: [
+                                                    'assets/plugins/angularjs/datepicker/angular-datepicker.min.js',
+                                                    'assets/css/plugins/datepicker/angular-datepicker.min.css'
+                                                ]
+                                            },
+                                            {
+                                                name: 'ui.select',
+                                                files: [
+                                                    'assets/plugins/angularjs/ui-select/select.min.js',
+                                                    'assets/css/plugins/ui-select/select.min.css'
+                                                ]
+                                            },
+                                            {
+                                                name: 'nvd3',
+                                                serie: true,
+                                                files: [
+                                                    'assets/plugins/angularjs/nvd3/d3.min.js',
+                                                    'assets/plugins/angularjs/nvd3/nv.d3.min.js',
+                                                    'assets/plugins/angularjs/nvd3/angular-nvd3.min.js',
+                                                    'assets/css/plugins/nvd3/nv.d3.min.css'
+                                                ]
+                                            },
+                                            {
+                                                serie: true,
+                                                files: [
+                                                    'assets/plugins/angularjs/highcharts/highcharts.js',
+                                                    'assets/plugins/angularjs/highcharts/exporting.js',
+                                                    'assets/plugins/angularjs/highcharts/offline-exporting.js',
+                                                    'assets/plugins/angularjs/highcharts/multi-export.js',
+                                                    'assets/plugins/angularjs/highcharts/theme.js',
+                                                    'assets/plugins/angularjs/highcharts/annotations.js',
+                                                            //'assets/css/plugins/highcharts/highcharts.css'
+                                                ]
+                                            }
+                                        ]
+                                        );
+                            }]
+                    }
+                })
+                .state('app.in.import', {
+                    url: 'import-file',
+                    data: {pageTitle: 'Import'},
+                    templateUrl: 'views/import.html',
+                    resolve: {
+                        service: ['$ocLazyLoad', function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    name: 'ngDropzone',
+                                    serie: true,
+                                    files: [
+                                        'assets/plugins/angularjs/dropzone/dropzone.js',
+                                        'assets/plugins/angularjs/dropzone/angular-dropzone.js',
+                                        'assets/css/plugins/dropzone/basic.css',
+                                        'assets/css/plugins/dropzone/dropzone.css'
+                                    ]
+                                });
                             }]
                     }
                 })

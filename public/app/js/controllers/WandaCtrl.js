@@ -1,11 +1,11 @@
 /*
- HUCtrl
+ GoCtrl
  */
-pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) {
+pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, HU, Bundle) {
 
     $scope.Working = function () {
-        return $scope.hu1Working || $scope.hu2Working || $scope.hu3Working || $scope.hu4Working
-                || $scope.hu9Working || $scope.husmsWorking || $scope.smscWorking || $scope.smscbyWorking || $scope.gprsWorking;
+        return $scope.bundle1Working || $scope.bundle2Working || $scope.bundle3Working || $scope.bundle4Working
+                || $scope.bundle9Working || $scope.bundlesmsWorking || $scope.smscWorking || $scope.smscbyWorking || $scope.gprsWorking;
     };
 
     $scope.subTitleOptions = {
@@ -38,23 +38,102 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
     $scope.charts = new Array(5);
 
     $scope.getData = function (startDate, endDate) {
-        // HU1
-        $scope.hu1Working = true;
-        HU.getHU1(startDate, endDate).then(function (result) {
-            $scope.hu1Working = false;
+        // Go 1000
+        $scope.bundle1Working = true;
+        Bundle.getManyBundle(20800,20808, startDate, endDate).then(function (result) {
+            $scope.bundle1Working = false;
+            console.log(result);
+            var series = [];
+            for(var product in result){
+                series.push({
+                    name: Bundle.getBundleName(product),
+                    data: result[product].map(function(o){return o.sum_total_amount;})
+                });
+            }
+            var chart = Highcharts.chart('bundle1', {
+                chart: {
+                    type: 'column',
+                    height: 300
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'MTN Wanda - Revenue'
+                },
+                subtitle: $scope.subTitleOptions,
+                xAxis: {
+                    categories: result[20800].map(function (o) {
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
+                    })
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: null
+                    },
+                    stackLabels:{
+                        enabled: true
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: false,
+                            style: {
+                                fontWeight: 'normal'
+                            }
+                        },
+                        enableMouseTracking: true
+                    }
+                },
+                legend: {
+                    enabled: true
+                },
+                series: series,
+                exporting: {
+                    sourceWidth: 1280,
+                    filename: 'HU1',
+                    buttons: {
+                        commentButton: {
+                            symbol: 'circle',
+                            symbolStrokeWidth: 5,
+                            _titleKey: 'commentButtonTitle',
+                            symbolStroke: 'grey',
+                            symbolFill: 'white',
+                            title: 'New comment',
+                            onclick: function () {
+                                $scope.addComment(chart, 0);
+                            }
+                        }
+                    }
+                }
+            });
+            $scope.charts[0] = chart;
+        }, function (error) {
+            $scope.bundle1Working = false;
+            toaster.error('Error on HU1 - ' + error.status, error.data.message);
+        });
+        
+        
+        //Go 3000
+        $scope.go3Working = true;
+        Bundle.getBundle1("20807", startDate, endDate).then(function (result) {
+            $scope.go3Working = false;
 
-            var chart = Highcharts.chart('hu1', {
+            var chart = Highcharts.chart('go3', {
                 chart: {
                     type: 'line',
                     height: 300
                 },
                 title: {
-                    text: 'HU1 - Subscribers whose total MOC is greater than 200 calls in a day'
+                    text: 'Go Bundle 3000 - Revenue'
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
                     categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
                 yAxis: {
@@ -78,9 +157,9 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
                     enabled: false
                 },
                 series: [{
-                        name: 'Subscribers',
+                        name: 'Revenue',
                         data: result.map(function (o) {
-                            return o.MSISDN;
+                            return o.sum_total_amount;
                         })
                     }
                 ],
@@ -104,27 +183,29 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
             });
             $scope.charts[0] = chart;
         }, function (error) {
-            $scope.hu1Working = false;
+            $scope.go3Working = false;
             toaster.error('Error on HU1 - ' + error.status, error.data.message);
         });
 
-        // Cash in
-        $scope.hu2Working = true;
-        HU.getHU2(startDate, endDate).then(function (result) {
-            $scope.hu2Working = false;
+        // go 5000
+        $scope.bundle2Working = true;
+        Bundle.getBundle1("20800", startDate, endDate).then(function (result) {
+            $scope.bundle2Working = false;
+            
+//            console.log(result);
 
-            var chart = Highcharts.chart('hu2', {
+            var chart = Highcharts.chart('bundle2', {
                 chart: {
                     type: 'line',
                     height: 300
                 },
                 title: {
-                    text: 'HU2 - Subscribers whose cumulative call duration is greater than 10 hours within a day'
+                    text: 'Go Bundle 5000'
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
                     categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
                 yAxis: {
@@ -148,9 +229,9 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
                     }
                 },
                 series: [{
-                        name: 'Subscribers',
+                        name: 'Revenue',
                         data: result.map(function (o) {
-                            return o.MSISDN;
+                            return o.sum_total_amount;
                         })
                     }
                 ],
@@ -174,27 +255,27 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
             });
             $scope.charts[1] = chart;
         }, function (error) {
-            $scope.hu2Working = false;
+            $scope.bundle2Working = false;
             toaster.error('Error on HU2 - ' + error.status, error.data.message);
         });
 
-        // HU3
-        $scope.hu3Working = true;
-        HU.getHU3(startDate, endDate).then(function (result) {
-            $scope.hu3Working = false;
+        // Go 10000
+        $scope.bundle3Working = true;
+        Bundle.getBundle1( "20804", startDate, endDate).then(function (result) {
+            $scope.bundle3Working = false;
 
-            var chart = Highcharts.chart('hu3', {
+            var chart = Highcharts.chart('bundle3', {
                 chart: {
                     type: 'line',
                     height: 300
                 },
                 title: {
-                    text: 'HU3 - Subscribers whose a single call duration is greater than 2h30min within a day'
+                    text: 'Go Bundle 10000'
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
                     categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
                 yAxis: {
@@ -218,9 +299,9 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
                     }
                 },
                 series: [{
-                        name: 'Subscribers',
+                        name: 'Revenue',
                         data: result.map(function (o) {
-                            return o.MSISDN;
+                            return o.sum_total_amount;
                         })
                     }
                 ],
@@ -244,27 +325,27 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
             });
             $scope.charts[2] = chart;
         }, function (error) {
-            $scope.hu3Working = false;
+            $scope.bundle3Working = false;
             toaster.error('Error on HU3 - ' + error.status, error.data.message);
         });
 
-        // HU4
-        $scope.hu4Working = true;
-        HU.getHU4(startDate, endDate).then(function (result) {
-            $scope.hu4Working = false;
+        // Go 15000
+        $scope.bundle4Working = true;
+        Bundle.getBundle1("20805", startDate, endDate).then(function (result) {
+            $scope.bundle4Working = false;
 
-            var chart = Highcharts.chart('hu4', {
+            var chart = Highcharts.chart('bundle4', {
                 chart: {
                     type: 'line',
                     height: 300
                 },
                 title: {
-                    text: 'HU4 - Subscribers whose total international MOC is greater than 50 calls within a day'
+                    text: 'Go Bundle 15000'
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
                     categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
                 yAxis: {
@@ -288,9 +369,9 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
                     }
                 },
                 series: [{
-                        name: 'Subscribers',
+                        name: 'Revenue',
                         data: result.map(function (o) {
-                            return o.MSISDN;
+                            return o.sum_total_amount;
                         })
                     }
                 ],
@@ -314,27 +395,27 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
             });
             $scope.charts[3] = chart;
         }, function (error) {
-            $scope.hu4Working = false;
+            $scope.bundle4Working = false;
             toaster.error('Error on HU4 - ' + error.status, error.data.message);
         });
 
-        // HU9
-        $scope.hu9Working = true;
-        HU.getHU9(startDate, endDate).then(function (result) {
-            $scope.hu9Working = false;
+        // Go 20000
+        $scope.bundle9Working = true;
+        Bundle.getBundle1("20801", startDate, endDate).then(function (result) {
+            $scope.bundle9Working = false;
 
-            var chart = Highcharts.chart('hu9', {
+            var chart = Highcharts.chart('bundle9', {
                 chart: {
                     type: 'line',
                     height: 300
                 },
                 title: {
-                    text: 'HU9 - Subscribers whose a single international call duration is greater than 1h30min within a day'
+                    text: 'Go Bundle 20000'
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
                     categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
                 yAxis: {
@@ -358,9 +439,9 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
                     }
                 },
                 series: [{
-                        name: 'Subscribers',
+                        name: 'Revenue',
                         data: result.map(function (o) {
-                            return o.MSISDN;
+                            return o.sum_total_amount;
                         })
                     }
                 ],
@@ -384,27 +465,27 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
             });
             $scope.charts[4] = chart;
         }, function (error) {
-            $scope.hu9Working = false;
+            $scope.bundle9Working = false;
             toaster.error('Error on HU9 - ' + error.status, error.data.message);
         });
 
-        // HU SMS
-        $scope.husmsWorking = true;
-        HU.getHUSms(startDate, endDate).then(function (result) {
-            $scope.husmsWorking = false;
+        // Go 35000
+        $scope.go35Working = true;
+        Bundle.getBundle1("20802", startDate, endDate).then(function (result) {
+            $scope.go35Working = false;
 
-            var chart = Highcharts.chart('husms', {
+            var chart = Highcharts.chart('go35', {
                 chart: {
                     type: 'line',
                     height: 300
                 },
                 title: {
-                    text: 'HU SMS - Subscribers whose total MOSMS is greater than 1,000 SMS within a day'
+                    text: 'Go Bundle 35000 - Revenue'
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
                     categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
                 yAxis: {
@@ -428,15 +509,15 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
                     }
                 },
                 series: [{
-                        name: 'Subscribers',
+                        name: 'Revenue',
                         data: result.map(function (o) {
-                            return o.MSISDN;
+                            return o.sum_total_amount;
                         })
                     }
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU SMS',
+                    filename: 'HU9',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -446,228 +527,18 @@ pDashboard.controller('huController', function ($scope, toaster, $uibModal, HU) 
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 5);
+                                $scope.addComment(chart, 4);
                             }
                         }
                     }
                 }
             });
-            $scope.charts[5] = chart;
+            $scope.charts[4] = chart;
         }, function (error) {
-            $scope.husmsWorking = false;
-            toaster.error('Error on HU SMS - ' + error.status, error.data.message);
+            $scope.go35Working = false;
+            toaster.error('Error on HU9 - ' + error.status, error.data.message);
         });
-
-        $scope.smscWorking = true;
-        HU.getSMSC(startDate, endDate).then(function (result) {
-            $scope.smscWorking = false;
-
-            var chart = Highcharts.chart('smsc', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Total number of SMS sent'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontSize: '10px',
-                                fontWeight: 'normal'
-                            },
-                            formatter: function () {
-                                return (parseFloat(this.y / 1000000).toFixed(2)).toLocaleString() + ' M';
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'Total SMS',
-                        data: result.map(function (o) {
-                            return o.SMS;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'SMS',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 6);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[6] = chart;
-        }, function (error) {
-            $scope.smscWorking = false;
-            toaster.error('Error on total SMS sent - ' + error.status, error.data.message);
-        });
-
-        $scope.smscbyWorking = true;
-        HU.getSMSCByPass(startDate, endDate).then(function (result) {
-            $scope.smscbyWorking = false;
-
-            var chart = Highcharts.chart('smscby', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Total number of SMS sent from other operators MSISDN through MTNC SMSCs'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'SMS',
-                        data: result.map(function (o) {
-                            return o.SMS;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'SMSC Bypass',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 7);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[7] = chart;
-        }, function (error) {
-            $scope.smscbyWorking = false;
-            toaster.error('Error on total SMS bypass - ' + error.status, error.data.message);
-        });
-
-        $scope.gprsWorking = true;
-        HU.getHUGprs(startDate, endDate).then(function (result) {
-            $scope.gprsWorking = false;
-
-            var chart = Highcharts.chart('gprs', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'HU GPRS - Subscribers whose total data usage is greater than 15 GB within a day'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.M_DATE));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'Subscribers',
-                        data: result.map(function (o) {
-                            return o.MSISDN;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'GPRS Usage',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 8);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[8] = chart;
-        }, function (error) {
-            $scope.gprsWorking = false;
-            toaster.error('Error on HU GPRS - ' + error.status, error.data.message);
-        });
+ 
     };
 
 

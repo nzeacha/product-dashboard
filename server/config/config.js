@@ -6,11 +6,12 @@
 
 function db() {
     var db = {};
-    db.host = "localhost";
-    db.user = "pdashboard";
+    db.host = "127.0.0.1";
+    db.user = "root";
     db.port = 3306;
-    db.password = "Product-D@shb0ard";
+    db.password = "q";
     db.database = "product_dashboard";
+//    db.database = "elenta";
     db.connectionLimit  = "200";
     db.pool = "?pool=true";
     return db;
