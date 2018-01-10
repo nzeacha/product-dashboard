@@ -35,14 +35,35 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
             }
         }
     };
+    
+    $scope.chartPicker = {date: {startDate: moment().subtract(30, 'days'), endDate: moment().subtract(1, 'days')}};
+
+    $scope.chartOptions = {
+        locale: {
+            format: 'MM/DD/YYYY'
+        },
+        minDate: moment().subtract(120, 'days'),
+        maxDate: moment().subtract(1, 'days'),
+        dateLimit: {days: 60},
+        ranges: {
+            'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+            'Last 30 Days': [moment().subtract(30, 'days'), moment().subtract(1, 'days')],
+            'This Month': [moment().startOf('month'), moment().subtract(1, 'days')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        eventHandlers: {
+            'apply.daterangepicker': function (ev, picker) {
+                //console.log(ev, picker);
+            }
+        }
+    };
     $scope.charts = new Array(5);
 
     $scope.getData = function (startDate, endDate) {
         // Go 1000
         $scope.bundle1Working = true;
-        Bundle.getManyBundle(20800,20808, startDate, endDate).then(function (result) {
+        Bundle.getManyBundle(900050,900103, startDate, endDate).then(function (result) {
             $scope.bundle1Working = false;
-            console.log(result);
             var series = [];
             for(var product in result){
                 series.push({
@@ -59,11 +80,11 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
                     enabled: false
                 },
                 title: {
-                    text: 'MTN Wanda - Revenue'
+                    text: 'MTN Wanda bundles - Revenue'
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
-                    categories: result[20800].map(function (o) {
+                    categories: result[900050].map(function (o) {
                         return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
@@ -89,7 +110,7 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
                     }
                 },
                 legend: {
-                    enabled: true
+                    enabled: false
                 },
                 series: series,
                 exporting: {
@@ -111,434 +132,13 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
                 }
             });
             $scope.charts[0] = chart;
+            console.log(chart.series[0].data);
         }, function (error) {
             $scope.bundle1Working = false;
             toaster.error('Error on HU1 - ' + error.status, error.data.message);
         });
         
         
-        //Go 3000
-        $scope.go3Working = true;
-        Bundle.getBundle1("20807", startDate, endDate).then(function (result) {
-            $scope.go3Working = false;
-
-            var chart = Highcharts.chart('go3', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Go Bundle 3000 - Revenue'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.date));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                series: [{
-                        name: 'Revenue',
-                        data: result.map(function (o) {
-                            return o.sum_total_amount;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'HU1',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 0);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[0] = chart;
-        }, function (error) {
-            $scope.go3Working = false;
-            toaster.error('Error on HU1 - ' + error.status, error.data.message);
-        });
-
-        // go 5000
-        $scope.bundle2Working = true;
-        Bundle.getBundle1("20800", startDate, endDate).then(function (result) {
-            $scope.bundle2Working = false;
-            
-//            console.log(result);
-
-            var chart = Highcharts.chart('bundle2', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Go Bundle 5000'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.date));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'Revenue',
-                        data: result.map(function (o) {
-                            return o.sum_total_amount;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'HU2',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 1);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[1] = chart;
-        }, function (error) {
-            $scope.bundle2Working = false;
-            toaster.error('Error on HU2 - ' + error.status, error.data.message);
-        });
-
-        // Go 10000
-        $scope.bundle3Working = true;
-        Bundle.getBundle1( "20804", startDate, endDate).then(function (result) {
-            $scope.bundle3Working = false;
-
-            var chart = Highcharts.chart('bundle3', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Go Bundle 10000'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.date));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'Revenue',
-                        data: result.map(function (o) {
-                            return o.sum_total_amount;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'HU3',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 2);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[2] = chart;
-        }, function (error) {
-            $scope.bundle3Working = false;
-            toaster.error('Error on HU3 - ' + error.status, error.data.message);
-        });
-
-        // Go 15000
-        $scope.bundle4Working = true;
-        Bundle.getBundle1("20805", startDate, endDate).then(function (result) {
-            $scope.bundle4Working = false;
-
-            var chart = Highcharts.chart('bundle4', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Go Bundle 15000'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.date));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'Revenue',
-                        data: result.map(function (o) {
-                            return o.sum_total_amount;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'HU4',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 3);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[3] = chart;
-        }, function (error) {
-            $scope.bundle4Working = false;
-            toaster.error('Error on HU4 - ' + error.status, error.data.message);
-        });
-
-        // Go 20000
-        $scope.bundle9Working = true;
-        Bundle.getBundle1("20801", startDate, endDate).then(function (result) {
-            $scope.bundle9Working = false;
-
-            var chart = Highcharts.chart('bundle9', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Go Bundle 20000'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.date));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'Revenue',
-                        data: result.map(function (o) {
-                            return o.sum_total_amount;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'HU9',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 4);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[4] = chart;
-        }, function (error) {
-            $scope.bundle9Working = false;
-            toaster.error('Error on HU9 - ' + error.status, error.data.message);
-        });
-
-        // Go 35000
-        $scope.go35Working = true;
-        Bundle.getBundle1("20802", startDate, endDate).then(function (result) {
-            $scope.go35Working = false;
-
-            var chart = Highcharts.chart('go35', {
-                chart: {
-                    type: 'line',
-                    height: 300
-                },
-                title: {
-                    text: 'Go Bundle 35000 - Revenue'
-                },
-                subtitle: $scope.subTitleOptions,
-                xAxis: {
-                    categories: result.map(function (o) {
-                        return d3.time.format('%d-%b-%y')(new Date(o.date));
-                    })
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: null
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'normal'
-                            }
-                        },
-                        enableMouseTracking: true
-                    }
-                },
-                series: [{
-                        name: 'Revenue',
-                        data: result.map(function (o) {
-                            return o.sum_total_amount;
-                        })
-                    }
-                ],
-                exporting: {
-                    sourceWidth: 1280,
-                    filename: 'HU9',
-                    buttons: {
-                        commentButton: {
-                            symbol: 'circle',
-                            symbolStrokeWidth: 5,
-                            _titleKey: 'commentButtonTitle',
-                            symbolStroke: 'grey',
-                            symbolFill: 'white',
-                            title: 'New comment',
-                            onclick: function () {
-                                $scope.addComment(chart, 4);
-                            }
-                        }
-                    }
-                }
-            });
-            $scope.charts[4] = chart;
-        }, function (error) {
-            $scope.go35Working = false;
-            toaster.error('Error on HU9 - ' + error.status, error.data.message);
-        });
- 
     };
 
 

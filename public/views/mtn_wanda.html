@@ -9,6 +9,11 @@
     <!-- begin row -->
     <div class="row m-b-15 m-t-20" >
         <div class="col-lg-offset-4 col-lg-4">
+            <input ng-disabled="Working()" id="period" date-range-picker options="chartOptions" class="form-control date-picker" type="text" ng-model="chartPicker.name" />
+        </div>
+    </div>
+    <div class="row m-b-15 m-t-20" >
+        <div class="col-lg-offset-4 col-lg-4">
             <label class="text-center control-label" style="width: 100%" for="period">Select the period</label>
             <input ng-disabled="Working()" id="period" date-range-picker options="rangeOptions" class="form-control date-picker" type="text" ng-model="rangePicker.date" />
         </div>
@@ -19,66 +24,6 @@
                 <div class="panel-body text-center">
                     <i class="fa fa-spinner fa-pulse" ng-show="bundle1Working"></i>
                     <div id="bundle1" ng-show="!bundle1Working">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <div class="panel panel-inverse">
-                <div class="panel-body text-center">
-                    <i class="fa fa-spinner fa-pulse" ng-show="go3Working"></i>
-                    <div id="go3"ng-show="!go3Working">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <div class="panel panel-inverse">
-                <div class="panel-body text-center">
-                    <i class="fa fa-spinner fa-pulse" ng-show="bundle2Working"></i>
-                    <div id="bundle2"ng-show="!bundle2Working">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <div class="panel panel-inverse">
-                <div class="panel-body text-center">
-                    <i class="fa fa-spinner fa-pulse" ng-show="bundle3Working"></i>
-                    <div id="bundle3" ng-show="!bundle3Working">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <div class="panel panel-inverse">
-                <div class="panel-body text-center">
-                    <i class="fa fa-spinner fa-pulse" ng-show="bundle4Working"></i>
-                    <div id="bundle4" ng-show="!bundle4Working">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <div class="panel panel-inverse">
-                <div class="panel-body text-center">
-                    <i class="fa fa-spinner fa-pulse" ng-show="bundle9Working"></i>
-                    <div id="bundle9" ng-show="!bundle9Working">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <div class="panel panel-inverse">
-                <div class="panel-body text-center">
-                    <i class="fa fa-spinner fa-pulse" ng-show="go35Working"></i>
-                    <div id="go35" ng-show="!go35Working">
                         
                     </div>
                 </div>
