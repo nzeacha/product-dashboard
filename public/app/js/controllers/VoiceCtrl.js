@@ -178,7 +178,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 0);
+                                $scope.addComment(chart, 1);
                             }
                         }
                     }
@@ -252,7 +252,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 0);
+                                $scope.addComment(chart, 2);
                             }
                         }
                     }
@@ -327,7 +327,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 1);
+                                $scope.addComment(chart, 3);
                             }
                         }
                     }
@@ -400,7 +400,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 2);
+                                $scope.addComment(chart, 4);
                             }
                         }
                     }
@@ -473,7 +473,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 3);
+                                $scope.addComment(chart, 5);
                             }
                         }
                     }
@@ -546,7 +546,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 4);
+                                $scope.addComment(chart, 6);
                             }
                         }
                     }
@@ -619,7 +619,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 4);
+                                $scope.addComment(chart, 7);
                             }
                         }
                     }
@@ -693,7 +693,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 4);
+                                $scope.addComment(chart, 8);
                             }
                         }
                     }
@@ -766,7 +766,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 4);
+                                $scope.addComment(chart, 9);
                             }
                         }
                     }
@@ -839,7 +839,7 @@ pDashboard.controller('voiceController', function ($scope, toaster, $uibModal, H
                             symbolFill: 'white',
                             title: 'New comment',
                             onclick: function () {
-                                $scope.addComment(chart, 4);
+                                $scope.addComment(chart, 10);
                             }
                         }
                     }

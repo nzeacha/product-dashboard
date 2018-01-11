@@ -65,13 +65,19 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
         Bundle.getManyBundle(900050,900103, startDate, endDate).then(function (result) {
             $scope.bundle1Working = false;
             var series = [];
+            var bestseries = [];
             for(var product in result){
                 series.push({
                     name: Bundle.getBundleName(product),
                     data: result[product].map(function(o){return o.sum_total_amount;})
                 });
+                bestseries.push({
+                    name: Bundle.getBundleName(product),
+                    data: result[product].map(function(o){return o.sum_total_amount;}),
+                    visible:  product==900055
+                });
             }
-            var chart = Highcharts.chart('bundle1', {
+            var chart = Highcharts.chart('wandaAll', {
                 chart: {
                     type: 'column',
                     height: 300
@@ -132,7 +138,70 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
                 }
             });
             $scope.charts[0] = chart;
-            console.log(chart.series[0].data);
+            
+            chart = Highcharts.chart('bundle1', {
+                chart: {
+                    type: 'line',
+                    height: 500
+                },
+                colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce', 
+                        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'MTN Wanda bundles - Revenue'
+                },
+                subtitle: $scope.subTitleOptions,
+                xAxis: {
+                    categories: result[900050].map(function (o) {
+                        return d3.time.format('%d-%b-%y')(new Date(o.date));
+                    })
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: null
+                    },
+                    stackLabels:{
+                        enabled: true
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true,
+                            style: {
+                                fontWeight: 'normal'
+                            }
+                        },
+                        enableMouseTracking: true
+                    }
+                },
+                legend: {
+                    enabled: true
+                },
+                series: bestseries,
+                exporting: {
+                    sourceWidth: 1280,
+                    filename: 'Wanda - Revenue',
+                    buttons: {
+                        commentButton: {
+                            symbol: 'circle',
+                            symbolStrokeWidth: 5,
+                            _titleKey: 'commentButtonTitle',
+                            symbolStroke: 'grey',
+                            symbolFill: 'white',
+                            title: 'New comment',
+                            onclick: function () {
+                                $scope.addComment(chart, 0);
+                            }
+                        }
+                    }
+                }
+            });
+            $scope.charts[1] = chart;
+            //console.log(chart.series[0].data);
         }, function (error) {
             $scope.bundle1Working = false;
             toaster.error('Error on HU1 - ' + error.status, error.data.message);

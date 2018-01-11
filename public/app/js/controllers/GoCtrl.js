@@ -86,11 +86,15 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                                 fontWeight: 'normal'
                             }
                         },
-                        enableMouseTracking: true
+                        enableMouseTracking: true,
+                        allowPointSelect:true,
+//                        showCheckbox:true,
+//                        selected:true
                     }
                 },
                 legend: {
-                    enabled: true
+                    enabled: true,
+                    draggable: true
                 },
                 series: series,
                 exporting: {
