@@ -5,10 +5,18 @@
     <!-- begin row -->
     <div class="row m-b-15 m-t-20" >
         <div class="col-lg-offset-4 col-lg-4">
-            <label class="text-center control-label" style="width: 100%" for="period">Add EXCEL file</label>
+            <label class="text-center control-label" style="width: 100%" for="period">IMPORT CSM DATA</label>
             <form class="dropzone" method="post" enctype="multipart/form-data"
                   ng-dropzone dropzone="csmDropzone" dropzone-config="csmDropzoneConfig"
                   event-handlers="{ 'success':csmSuccess, 'error':csmError }"></form>
+        </div>
+    </div>
+    <div class="row m-b-15 m-t-20" >
+        <div class="col-lg-offset-4 col-lg-4">
+            <label class="text-center control-label" style="width: 100%" for="period">IMPORT MyMTN DATA</label>
+            <form class="dropzone" method="post" enctype="multipart/form-data"
+                  ng-dropzone dropzone="mymtnDropzone" dropzone-config="mymtnDropzoneConfig"
+                  event-handlers="{ 'success':mymtnSuccess, 'error':mymtnError }"></form>
         </div>
     </div>
 </div>		

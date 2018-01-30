@@ -11,7 +11,7 @@ function HUService($q, $http) {
 
     service.export = function (charts) {
         var d = $q.defer();
-        var url = '/hu/export-all';
+        var url = '/report/export-all';
         $http({
             method: 'POST',
             url: url,

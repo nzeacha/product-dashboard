@@ -121,7 +121,7 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
                 series: series,
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU1',
+                    filename: 'MTN_Wanda_bundles',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -265,7 +265,7 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
             a.style = "display: none";
             a.href = url;
             var d = angular.copy($scope.rangePicker.date.endDate);
-            a.download = 'Voice_SMS_Data_HU_report_' + d.add(1, 'days').format('YYYYMMDD') + '.pdf';
+            a.download = 'MTN_Wanda_report_' + d.add(1, 'days').format('YYYYMMDD') + '.pdf';
             a.target = '_blank';
             a.click();
         }, function (error) {

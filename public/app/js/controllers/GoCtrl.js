@@ -172,7 +172,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU1',
+                    filename: 'Go1000',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -246,7 +246,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU1',
+                    filename: 'Go3000',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -321,7 +321,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU2',
+                    filename: 'Go5000',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -394,7 +394,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU3',
+                    filename: 'Go10000',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -467,7 +467,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU4',
+                    filename: 'Go15000',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -540,7 +540,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU9',
+                    filename: 'Go20000',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -613,7 +613,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
                 ],
                 exporting: {
                     sourceWidth: 1280,
-                    filename: 'HU9',
+                    filename: 'Go35000',
                     buttons: {
                         commentButton: {
                             symbol: 'circle',
@@ -692,7 +692,7 @@ pDashboard.controller('goController', function ($scope, toaster, $uibModal, HU, 
             a.style = "display: none";
             a.href = url;
             var d = angular.copy($scope.rangePicker.date.endDate);
-            a.download = 'Voice_SMS_Data_HU_report_' + d.add(1, 'days').format('YYYYMMDD') + '.pdf';
+            a.download = 'Go_bundles_report_' + d.add(1, 'days').format('YYYYMMDD') + '.pdf';
             a.target = '_blank';
             a.click();
         }, function (error) {

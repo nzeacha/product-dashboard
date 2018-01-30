@@ -8,6 +8,24 @@ pDashboard.controller('importController', function ($scope, toaster, $uibModal) 
                 || $scope.bundle9Working || $scope.bundlesmsWorking || $scope.smscWorking || $scope.smscbyWorking || $scope.gprsWorking;
     };
     
+    $scope.mymtnDropzoneConfig = {
+        parallelUploads : 1,
+        url:'import/mymtn',
+        maxFiles: 10,
+        acceptedFiles: ".xls, .xlsx, .csv",
+        paramName: "file"
+    };
+    
+    $scope.mymtnError = function(file, errormsg) {
+        toaster.error('Error when uploading' + file.name, errormsg);
+        $scope.mymtnDropzone.processQueue.bind($scope.mymtnDropzone);
+    };
+    
+    $scope.mymtnSuccess = function(file, report) {
+        console.log(file,report);
+        $scope.mymtnDropzone.processQueue.bind($scope.mymtnDropzone);
+    };
+    
     $scope.csmDropzoneConfig = {
         parallelUploads : 1,
         url:'import/csm',
@@ -25,7 +43,5 @@ pDashboard.controller('importController', function ($scope, toaster, $uibModal) 
         console.log(file,report);
         $scope.csmDropzone.processQueue.bind($scope.csmDropzone);
     };
-    
-    
 
 });

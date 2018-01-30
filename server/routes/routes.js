@@ -55,6 +55,24 @@ class Personne {
         return this.total_amount;
     }
 }
+
+class Mymtn {
+    
+    constructor(date, download, uninstall, new_users, active_users,
+        total_users, dod_download, dod_new_users, dod_active_users) {
+            
+        this.date = date;
+        this.download = download;
+        this.uninstall = uninstall;
+        this.new_users = new_users;
+        this.active_users = active_users;
+        this.total_users = total_users;
+        this.dod_download = dod_download;
+        this.dod_new_users = dod_new_users;
+        this.dod_active_users = dod_active_users
+    }
+    
+}
 /**
  * @constructor
  * @param {App} router entry point app
@@ -217,45 +235,45 @@ var Routes = function (router) {
         
         
         
-        router.post('/bundle/:code', function (req, res){
-            var code = req.params.code;
-            var dates = req.body;
-            var product = req.models.product.entity;
-            
-            var sd = new Date(dates.sd);
-            console.log(sd);
-            sd.setDate(sd.getDate()-1);
-            console.log(sd);
-            
-            product.find({product_code:code, date:orm.between(sd, new Date(dates.ed))}, function(error, results){
-               
-               res.status(200).json(results); 
-            });
+    router.post('/bundle/:code', function (req, res){
+        var code = req.params.code;
+        var dates = req.body;
+        var product = req.models.product.entity;
+
+        var sd = new Date(dates.sd);
+        console.log(sd);
+        sd.setDate(sd.getDate()-1);
+        console.log(sd);
+
+        product.find({product_code:code, date:orm.between(sd, new Date(dates.ed))}, function(error, results){
+
+           res.status(200).json(results); 
+        });
 //            product.find({product_code:code}, function(error, results){
 //               res.status(200).json(results); 
 //            });
+    });
+
+    router.post('/manybundle/', function (req, res){
+
+        var data = req.body;
+        var product = req.models.product.entity;
+
+        var sd = new Date(data.sd);
+        sd.setDate(sd.getDate()-1);
+
+        product.find({product_code:orm.between(data.code1, data.code2), date:orm.between(sd, new Date(data.ed))}, function(error, results){
+            var tab = {};
+            for(var i = data.code1; i<= data.code2; i++){
+               tab[i] = results.filter(function(o){return o.product_code === i;});
+               if(tab[i].length === 0) delete tab[i];
+           }
+           res.status(200).json(tab); 
         });
-        
-        router.post('/manybundle/', function (req, res){
-            
-            var data = req.body;
-            var product = req.models.product.entity;
-            
-            var sd = new Date(data.sd);
-            sd.setDate(sd.getDate()-1);
-            
-            product.find({product_code:orm.between(data.code1, data.code2), date:orm.between(sd, new Date(data.ed))}, function(error, results){
-                var tab = {};
-                for(var i = data.code1; i<= data.code2; i++){
-                   tab[i] = results.filter(function(o){return o.product_code === i;});
-                   if(tab[i].length === 0) delete tab[i];
-               }
-               res.status(200).json(tab); 
-            });
 //            product.find({product_code:code}, function(error, results){
 //               res.status(200).json(results); 
 //            });
-        });
+    });
         
         
 
@@ -323,9 +341,53 @@ var Routes = function (router) {
     });
     });
 
+    router.post('/import/mymtn', function(req, res){
+        upload(req, res, function(error){
+
+        if (error){
+            console.log(error);
+            res.status(400).json(error);
+        } else {
+            var f = req.file;
+            var filepath = path.resolve(f.destination + '/' + f.filename);
+            var workbook = XLSX.readFile(filepath);
+            var sheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[sheetName];
+            var range = XLSX.utils.decode_range(worksheet['!ref']);
+            var mymtns = [];
+            var tab = [];
+            var j = 1;
+            
+            for (j; j < range.e.r; j++){
+                for (var k = 0; k <= 8; k++){
+                    if(worksheet[XLSX.utils.encode_cell({r:j, c:k})]){
+                        tab[k] = worksheet[XLSX.utils.encode_cell({r:j, c:k})].v;
+                    }
+                }
+                //console.log(tab[6]);
+                var p = new Mymtn(new Date((tab[0] - (25567+2))*86400*1000), tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8]);
+                
+                mymtns.push(p);
+                tab = [];
+            }
+            var mymtn = req.models.mymtn.entity;
+//            csm.remove
+            mymtn.find({}).remove(function(err){
+                console.log(err);
+                console.log("Importation Start:");
+                mymtn.create(mymtns, function(error, result){
+                    console.log(error);
+                    console.log("importation finish");
+                });  
+            });
+
+    }
+
+
+    });
+    });    
         
-        
-        router.post('/hu/export-all/', function (req, res) {
+        router.post('/report/export-all/', function (req, res) {
 //        if (auth.assertLoggedIn(req, res)) {
         var data = req.body;
                 hu.generateReportPdf(data, res);

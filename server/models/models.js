@@ -25,7 +25,7 @@ var Model = function (db, models, next) {
             }, {
                 methods: {
                     fullName: function () {
-                        return 'csm ['+this.id+']';
+                        return 'csm ['+this.date+' '+this.product_code+']';
                     }
                 }
             })
@@ -41,7 +41,30 @@ var Model = function (db, models, next) {
             }, {
                 methods: {
                     fullName: function () {
-                        return 'products ['+this.id+']';
+                        return 'products ['+this.date+' '+this.product_code+']';
+                    }
+                }
+            })
+    };
+    
+    next();
+    
+    models.mymtn = {
+        modelName: "mymtn",
+        entity: db.define("mymtn", { 
+                date: {type:"date", key:true},    
+                download : Number,
+                uninstall : Number,
+                new_users : Number,    
+                active_users : Number,
+                total_users : Number,
+                dod_download : Number,
+                dod_new_users : Number,
+                dod_active_users : Number
+            }, {
+                methods: {
+                    fullName: function () {
+                        return 'mymtn ['+this.date+']';
                     }
                 }
             })
