@@ -1,0 +1,43 @@
+<div ng-controller="mymtnController">
+    <h1 class="page-header">MyMTN
+        <a class="btn btn-xs btn-white" ng-click="export()" ng-disabled="Working() || exporting || !charts.length">
+            <i class="fa fa-file-pdf-o"></i>&nbsp;
+            Export to PDF 
+            <i class="fa fa-spinner fa-pulse" ng-show="exporting"></i>
+        </a>
+    </h1>
+    <!-- begin row -->
+    <div class="row m-b-15 m-t-20" >
+        <div class="col-lg-offset-4 col-lg-4">
+            <label class="text-center control-label" style="width: 100%" for="period">Select the period</label>
+            <input ng-disabled="Working()" id="period" date-range-picker options="rangeOptions" class="form-control date-picker" type="text" ng-model="rangePicker.date" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="panel panel-inverse">
+                <div class="panel-body text-center">
+                    <i class="fa fa-spinner fa-pulse" ng-show="bundle1Working"></i>
+                    <div id="mymtnAll" ng-show="!bundle1Working">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+    <script type="text/ng-template" id="ModalChartComment.html">
+        <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Add Comment</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="form-horizontal">
+                <textarea autofocus style="resize: none" class="form-control" placeholder="Comment" ng-model="comment"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-inverse" type="button" ng-click="saveComment()">Save</button>
+            <button class="btn btn-white" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+</div>		

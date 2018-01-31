@@ -275,7 +275,23 @@ var Routes = function (router) {
 //            });
     });
         
-        
+    router.post('/mymtn/', function (req, res){
+
+        var data = req.body;
+        var mymtn = req.models.mymtn.entity;
+
+        var sd = new Date(data.sd);
+        sd.setDate(sd.getDate()-1);
+
+        mymtn.find({date:orm.between(sd, new Date(data.ed))}, function(error, results){
+            var tab = {};
+            console.log(results);
+           res.status(200).json(results); 
+        });
+//            product.find({product_code:code}, function(error, results){
+//               res.status(200).json(results); 
+//            });
+    });    
 
     router.post('/import/csm', function(req, res){
         upload(req, res, function(error){

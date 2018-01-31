@@ -147,6 +147,24 @@ function BundleService($q, $http) {
         return d.promise;
     };
 
+    service.getMymtn = function (sd, ed) {
+        var d = $q.defer();
+        var url = '/mymtn/';
+        $http({
+            method: 'POST',
+            url: url,
+            data: {
+                sd: sd,
+                ed: ed
+            }
+        }).then(function (response) {
+            d.resolve(response.data);
+        }, function (error) {
+            d.reject(error);
+        });
+        return d.promise;
+    };
+    
     service.getBundle3 = function (sd, ed) {
         var d = $q.defer();
         var url = '/bundle/3';

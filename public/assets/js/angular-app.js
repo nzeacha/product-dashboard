@@ -321,6 +321,65 @@ pDashboard.config(['$stateProvider', '$urlRouterProvider', function ($stateProvi
                             }]
                     }
                 })
+                .state('app.in.mymtn', {
+                    url: 'mymtn',
+                    data: {pageTitle: 'MyMTN'},
+                    templateUrl: 'views/mymtn.html',
+                    resolve: {
+                        service: ['$ocLazyLoad', function ($ocLazyLoad) {
+                                return $ocLazyLoad.load(
+                                        [
+                                            {
+                                                name: 'daterangepicker',
+                                                serie: true,
+                                                files: [
+                                                    'assets/plugins/moment/moment.min.js',
+                                                    'assets/plugins/angularjs/daterangepicker/daterangepicker.js',
+                                                    'assets/plugins/angularjs/daterangepicker/angular-daterangepicker.js',
+                                                    'assets/css/plugins/daterangepicker/daterangepicker-bs3.css'
+                                                ]
+                                            },
+                                            {
+                                                name: 'datePicker',
+                                                files: [
+                                                    'assets/plugins/angularjs/datepicker/angular-datepicker.min.js',
+                                                    'assets/css/plugins/datepicker/angular-datepicker.min.css'
+                                                ]
+                                            },
+                                            {
+                                                name: 'ui.select',
+                                                files: [
+                                                    'assets/plugins/angularjs/ui-select/select.min.js',
+                                                    'assets/css/plugins/ui-select/select.min.css'
+                                                ]
+                                            },
+                                            {
+                                                name: 'nvd3',
+                                                serie: true,
+                                                files: [
+                                                    'assets/plugins/angularjs/nvd3/d3.min.js',
+                                                    'assets/plugins/angularjs/nvd3/nv.d3.min.js',
+                                                    'assets/plugins/angularjs/nvd3/angular-nvd3.min.js',
+                                                    'assets/css/plugins/nvd3/nv.d3.min.css'
+                                                ]
+                                            },
+                                            {
+                                                serie: true,
+                                                files: [
+                                                    'assets/plugins/angularjs/highcharts/highcharts.js',
+                                                    'assets/plugins/angularjs/highcharts/exporting.js',
+                                                    'assets/plugins/angularjs/highcharts/offline-exporting.js',
+                                                    'assets/plugins/angularjs/highcharts/multi-export.js',
+                                                    'assets/plugins/angularjs/highcharts/theme.js',
+                                                    'assets/plugins/angularjs/highcharts/annotations.js',
+                                                            //'assets/css/plugins/highcharts/highcharts.css'
+                                                ]
+                                            }
+                                        ]
+                                        );
+                            }]
+                    }
+                })
                 .state('app.in.import', {
                     url: 'import-file',
                     data: {pageTitle: 'Import'},
