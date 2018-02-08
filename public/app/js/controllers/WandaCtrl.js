@@ -90,7 +90,7 @@ pDashboard.controller('wandaController', function ($scope, toaster, $uibModal, H
                 },
                 subtitle: $scope.subTitleOptions,
                 xAxis: {
-                    categories: result[900050].map(function (o) {
+                    categories: result[900055].map(function (o) {
                         return d3.time.format('%d-%b-%y')(new Date(o.date));
                     })
                 },
